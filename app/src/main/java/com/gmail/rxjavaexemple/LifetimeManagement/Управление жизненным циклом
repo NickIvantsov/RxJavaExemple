@@ -1,0 +1,20 @@
+Идея, лежащая в основе Rx, заключается в том, что неизвестно, когда последовательность
+ выдает значения или завершается, но вы все еще можете контролировать, когда начинаете
+  и прекращаете принимать значения. Подписки могут быть связаны с выделенными ресурсами,
+   которые вы захотите выпустить в конце последовательности. Rx обеспечивает контроль над
+    вашими подписками, чтобы вы могли это сделать.
+
+Subscribing
+
+Есть несколько перегрузок Observable.subscribe, которые являются сокращением для одной и той же вещи.
+
+Subscription 	subscribe()
+Subscription 	subscribe(Action1<? super T> onNext)
+Subscription 	subscribe(Action1<? super T> onNext, Action1<java.lang.Throwable> onError)
+Subscription 	subscribe(Action1<? super T> onNext, Action1<java.lang.Throwable> onError, Action0 onComplete)
+Subscription 	subscribe(Observer<? super T> observer)
+Subscription 	subscribe(Subscriber<? super T> subscriber)
+
+subscribe()потребляет события, но не выполняет никаких действий. Перегрузки, которые принимают одну
+ или несколько, Actionсоздадут Subscriberфункции с предоставленными вами функциями.
+  Там, где вы не даете действие, событие практически игнорируется.
