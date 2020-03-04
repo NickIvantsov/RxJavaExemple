@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.gmail.rxjavaexemple.KeyTypes.*
+import com.gmail.rxjavaexemple.operatorsTransformingObservables.buffer
 
 
 class MainActivity : AppCompatActivity() {
@@ -64,6 +65,9 @@ class MainActivity : AppCompatActivity() {
 
     fun observableCreatePressed(view: View) {
         observableCreate()
+    }
+    fun operatorsBufferPressed(view: View) {
+        buffer()
     }
 
 }
