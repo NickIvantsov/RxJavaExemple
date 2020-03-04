@@ -86,3 +86,56 @@ fun map() {
             println("onSubscribe")
         }
 }
+
+/**
+ * http://reactivex.io/documentation/operators/flatmap.html
+ *
+ * преобразовать объекты, испускаемые Обсерваторией, в Наблюдаемые,
+ * а затем сгладить выбросы
+ * от этих объектов в единую Наблюдаем
+ *
+ *  onSubscribe
+ onNext: 2
+ onNext: 6
+ onNext: 4
+ onNext: 10
+ onNext: 8
+ onNext: 12
+ onComplete
+ *
+ */
+fun flatMap() {
+    val integers = listOf(1, 2, 3, 4, 5, 6)
+    val value = Observable.create { emitter: ObservableEmitter<Int> ->
+        integers.forEach {
+            when {
+                !emitter.isDisposed -> emitter.onNext(it)
+            }
+        }
+        when {
+            !emitter.isDisposed -> emitter.onComplete()
+        }
+    }
+
+
+    val subscription = value.flatMap {
+            getModifiedObservable(it)
+        }.subscribeOn(Schedulers.io())
+        .subscribe({ integer ->
+            println("onNext: $integer")
+        }, { onError ->
+            println("onError = ${onError.printStackTrace()}")
+        }, {
+            println("onComplete")
+
+        }) {
+            println("onSubscribe")
+        }
+    Thread.sleep(2000)
+}
+
+private fun getModifiedObservable(integer: Int): Observable<Int> =
+    Observable.create { emitter: ObservableEmitter<Int> ->
+        emitter.onNext(integer * 2)
+        emitter.onComplete()
+    }.subscribeOn(Schedulers.io())
