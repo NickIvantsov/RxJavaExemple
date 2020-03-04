@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.gmail.rxjavaexemple.KeyTypes.*
 import com.gmail.rxjavaexemple.operatorsTransformingObservables.buffer
+import com.gmail.rxjavaexemple.operatorsTransformingObservables.map
 
 
 class MainActivity : AppCompatActivity() {
@@ -68,6 +69,9 @@ class MainActivity : AppCompatActivity() {
     }
     fun operatorsBufferPressed(view: View) {
         buffer()
+    }
+    fun operatorsMapPressed(view: View) {
+        map()
     }
 
 }
