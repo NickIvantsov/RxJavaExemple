@@ -215,6 +215,39 @@
                 app:layout_constraintStart_toStartOf="@+id/operatorsMapTv"
                 app:layout_constraintTop_toBottomOf="@+id/operatorsMapTv" />
 
+            <TextView
+                android:id="@+id/operatorsSwitchMapTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="operatorsSwitchMapPressed"
+                android:text="Operators SwitchMap"
+                app:layout_constraintEnd_toEndOf="@+id/operatorsFlatMap"
+                app:layout_constraintStart_toStartOf="@+id/operatorsFlatMap"
+                app:layout_constraintTop_toBottomOf="@+id/operatorsFlatMap" />
+
+            <TextView
+                android:id="@+id/operatorsConcatMapTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="operatorsConcatMapPressed"
+                android:text="Operators ConcatMap"
+                app:layout_constraintEnd_toEndOf="@+id/operatorsSwitchMapTv"
+                app:layout_constraintStart_toStartOf="@+id/operatorsSwitchMapTv"
+                app:layout_constraintTop_toBottomOf="@+id/operatorsSwitchMapTv" />
+
+            <TextView
+                android:id="@+id/operatorsGroupByTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:onClick="operatorsGroupByPressed"
+                android:text="Operators GroupBy"
+                app:layout_constraintEnd_toEndOf="@+id/operatorsConcatMapTv"
+                app:layout_constraintStart_toStartOf="@+id/operatorsConcatMapTv"
+                app:layout_constraintTop_toBottomOf="@+id/operatorsConcatMapTv" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

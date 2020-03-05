@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.gmail.rxjavaexemple.KeyTypes.*
-import com.gmail.rxjavaexemple.operatorsTransformingObservables.buffer
-import com.gmail.rxjavaexemple.operatorsTransformingObservables.flatMap
-import com.gmail.rxjavaexemple.operatorsTransformingObservables.map
+import com.gmail.rxjavaexemple.operatorsTransformingObservables.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -76,6 +74,15 @@ class MainActivity : AppCompatActivity() {
     }
     fun operatorsFlatMapPressed(view: View) {
         flatMap()
+    }
+    fun operatorsSwitchMapPressed(view: View) {
+        switchMap()
+    }
+    fun operatorsConcatMapPressed(view: View) {
+        concatMap()
+    }
+    fun operatorsGroupByPressed(view: View) {
+        groupBy()
     }
 
 }

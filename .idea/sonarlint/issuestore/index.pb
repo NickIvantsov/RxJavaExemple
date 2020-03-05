@@ -60,3 +60,5 @@ Kapp/src/main/java/com/gmail/rxjavaexemple/KeyTypes/PublishSubjectExemple.kt,a\
 qapp/src/main/java/com/gmail/rxjavaexemple/LifetimeManagement/Управление жизненным циклом,1\7\17a625929c4cdf587505e2b9d57e3b0cfb5d79ba
 z
 Japp/src/main/java/com/gmail/rxjavaexemple/KeyTypes/ReplaySubjectExemple.kt,1\3\13fee9f7e6a2b8e83f73534e2d415bb6781bc78e
+�
+Yapp/src/main/java/com/gmail/rxjavaexemple/operatorsTransformingObservables/Transformin.kt,7\a\7ab30fef328a4a55eb1d3c3d15b404c10a9e6fc8
