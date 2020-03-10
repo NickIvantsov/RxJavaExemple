@@ -41,24 +41,31 @@ class MainActivity : AppCompatActivity() {
     fun asyncSubjectPressed(view: View) {
         asyncSubject()
     }
+
     fun implicitContractsPressed(view: View) {
         implicitContracts()
     }
+
     fun replaySubjectHandleError(view: View) {
         replayHandleError()
     }
+
     fun unsubscribingPressed(view: View) {
         replayDispose()
     }
+
     fun replayDisposeSecondExamplePressed(view: View) {
         replayDisposeSecondExample()
     }
+
     fun onCompleteExamplePressed(view: View) {
         onCompleteExample()
     }
+
     fun observableJustPressed(view: View) {
         observableJust()
     }
+
     fun observableEmptyPressed(view: View) {
         observableEmpty()
     }
@@ -66,23 +73,33 @@ class MainActivity : AppCompatActivity() {
     fun observableCreatePressed(view: View) {
         observableCreate()
     }
+
     fun operatorsBufferPressed(view: View) {
         buffer()
     }
+
     fun operatorsMapPressed(view: View) {
         map()
     }
+
     fun operatorsFlatMapPressed(view: View) {
         flatMap()
     }
+
     fun operatorsSwitchMapPressed(view: View) {
         switchMap()
     }
+
     fun operatorsConcatMapPressed(view: View) {
         concatMap()
     }
+
     fun operatorsGroupByPressed(view: View) {
         groupBy()
+    }
+
+    fun operatorsScanPressed(view: View) {
+        scan()
     }
 
 }

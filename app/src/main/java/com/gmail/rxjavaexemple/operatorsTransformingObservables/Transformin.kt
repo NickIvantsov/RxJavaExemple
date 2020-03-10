@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.schedulers.Schedulers
 
+
 //В сценариях мы можем использовать разные операторы:
 //Оператор карты может использоваться, когда мы выбираем элементы с сервера и должны изменить
 // его перед отправкой в ​​пользовательский интерфейс.
@@ -236,17 +237,39 @@ fun groupBy() {
     val value = Observable.range(1, 10).groupBy {
         it % 2 == 0
     }
-    val subscription = value.subscribe({booleanIntegerGroupedObservable->
-        booleanIntegerGroupedObservable.subscribe({integer->
+    val subscription = value.subscribe({ booleanIntegerGroupedObservable ->
+        booleanIntegerGroupedObservable.subscribe({ integer ->
             println("onNext: $integer")
-        },{onError ->
+        }, { onError ->
             println("onError = ${onError.printStackTrace()}")
 
-        },{
+        }, {
             println("onComplete")
-        }){
+        }) {
             println("onSubscribe")
         }
+    }, { onError ->
+        println("onError = ${onError.printStackTrace()}")
+    }, {
+        println("onComplete")
+    }) {
+        println("onSubscribe")
+    }
+}
+
+/**
+ * Этот оператор превращает каждый элемент в другой элемент, как вы сделали с map.
+ * Но также включите «предыдущий» элемент, когда вы приступаете к выполнению преобразования.
+ */
+fun scan() {
+    val value = Observable.range(1, 10)
+        .scan { integer, integer2 ->
+            println("integer = $integer integer2 = $integer2")
+            integer + integer2
+        }
+
+    val subscription = value.subscribe({
+        println("onNext: $it")
     }, { onError ->
         println("onError = ${onError.printStackTrace()}")
     }, {
