@@ -7,7 +7,7 @@ import com.gmail.rxjavaexemple.KeyTypes.*
 import com.gmail.rxjavaexemple.operatorsTransformingObservables.*
 
 
-class MainActivity : AppCompatActivity() {
+class RxJavaOperationsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
