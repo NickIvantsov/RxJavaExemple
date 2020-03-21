@@ -1,12 +1,10 @@
 package com.gmail.rxjavaexemple
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import butterknife.ButterKnife
 import butterknife.OnClick
-import com.google.android.material.snackbar.Snackbar
 
 class StartActivity : AppCompatActivity() {
 
@@ -18,7 +16,12 @@ class StartActivity : AppCompatActivity() {
 
     @OnClick(R.id.rxOperationBtn)
     fun rxOperationPressed(v: View) {
-        val intent = Intent(applicationContext, RxJavaOperationsActivity::class.java)
-        startActivity(intent)
+        navigateTo(RxJavaOperationsActivity::class.java)
     }
+
+    @OnClick(R.id.helloRxJavaBtn)
+    fun helloRxJavaPressed(v: View) {
+        navigateTo(HelloWorldActivity::class.java)
+    }
+
 }

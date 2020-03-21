@@ -3,12 +3,14 @@
     package="com.gmail.rxjavaexemple">
 
     <application
+        android:name=".AppApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".HelloWorldActivity"></activity>
         <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,9 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RxJavaOperationsActivity">
-
-        </activity>
+        <activity android:name=".RxJavaOperationsActivity"></activity>
     </application>
 
 </manifest>
