@@ -1,6 +1,4 @@
 
-i
-9app/src/main/java/com/gmail/rxjavaexemple/MainActivity.kt,9\a\9a5183acb537c3ddc39073356fb0d2af0e57f624
 {
 Kapp/src/androidTest/java/com/gmail/rxjavaexemple/ExampleInstrumentedTest.kt,1\2\126e8830c7292f3648052198b142b917b94e4e0c
 d
@@ -62,3 +60,15 @@ z
 Japp/src/main/java/com/gmail/rxjavaexemple/KeyTypes/ReplaySubjectExemple.kt,1\3\13fee9f7e6a2b8e83f73534e2d415bb6781bc78e
 ‰
 Yapp/src/main/java/com/gmail/rxjavaexemple/operatorsTransformingObservables/Transformin.kt,7\a\7ab30fef328a4a55eb1d3c3d15b404c10a9e6fc8
+k
+;app/src/main/java/com/gmail/rxjavaexemple/AppApplication.kt,f\4\f48348b7a995266791b61f0d1a0d26a386131b03
+h
+8app/src/main/java/com/gmail/rxjavaexemple/Navigations.kt,4\8\4849d3e8e67b7e3b142d225dc7b97ea92851680c
+Z
+*app/src/main/res/layout/activity_start.xml,8\3\832a04df3756998416c38e735b87a5d7f507674f
+j
+:app/src/main/java/com/gmail/rxjavaexemple/StartActivity.kt,8\6\8644674437661aaf2c26d915c20664a24b602e38
+u
+Eapp/src/main/java/com/gmail/rxjavaexemple/RxJavaOperationsActivity.kt,f\4\f453ad5341bd3926b18383a0f406028abf714c76
+o
+?app/src/main/java/com/gmail/rxjavaexemple/HelloWorldActivity.kt,0\1\011b0ed860536b00491e9e6fb01df07c5596d0dd
