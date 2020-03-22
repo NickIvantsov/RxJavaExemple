@@ -72,3 +72,7 @@ u
 Eapp/src/main/java/com/gmail/rxjavaexemple/RxJavaOperationsActivity.kt,f\4\f453ad5341bd3926b18383a0f406028abf714c76
 o
 ?app/src/main/java/com/gmail/rxjavaexemple/HelloWorldActivity.kt,0\1\011b0ed860536b00491e9e6fb01df07c5596d0dd
+`
+0app/src/main/res/layout/activity_hello_world.xml,3\f\3f561743298ac59e6fa564b5e57e0be52d2e3676
+]
+-app/src/main/res/layout/stock_update_item.xml,a\2\a27351abf5647d0f21c902184279f6ccf952ea50

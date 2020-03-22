@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 import java.text.DecimalFormat
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -54,7 +55,24 @@ class HelloWorldActivity : AppCompatActivity() {
 
         Observable.just("Hello! Please use this app responsibly!")
             .subscribe { helloWorldSalute.text = it }
+
+        Observable.just(1, 2, 3, 4, 5)
+            .subscribeOn(Schedulers.io())
+            .doOnNext {
+                Log.d("TAG", "${Thread.currentThread().name} item = $it")
+            }
+            .map { it * 2 }
+            .doOnNext {
+                Log.d("TAG", "${Thread.currentThread().name} item = $it")
+            }
+
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.d("TAG", "${Thread.currentThread().name} item  =  $it")
+            }
     }
+
+
 }
 
 
@@ -71,7 +89,7 @@ class StockDataAdapter(private val data: MutableList<StockUpdate> = ArrayList())
 
     override fun onBindViewHolder(holder: StockUpdateViewHolder, position: Int) {
         val stockUpdate = data[position]
-        holder.stockSymbol.text = stockUpdate.stockSymbol
+        holder.setData(stockUpdate.stockSymbol, stockUpdate.prise, stockUpdate.date)
     }
 
     fun add(stockSymbol: StockUpdate) {
@@ -95,16 +113,17 @@ class StockUpdateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     }
 
     fun setPrise(prise: BigDecimal) {
-        this.price.text = price.toString()
+        this.price.text = DecimalFormat("#0.00").format(prise)
     }
 
     fun setDate(date: Date) {
         this.date.text = (SimpleDateFormat.getDateTimeInstance().format(date))
-//        ("yyyy-MM-dd hh:mm", date)
     }
 
-    companion object {
-        val PRICE_FORMAT: NumberFormat = DecimalFormat("#0.00")
+    fun setData(stockSymbol: String, prise: BigDecimal, date: Date) {
+        this.stockSymbol.text = stockSymbol
+        this.price.text = DecimalFormat("#0.00").format(prise)
+        this.date.text = (SimpleDateFormat.getDateTimeInstance().format(date))
     }
 
     init {
@@ -113,4 +132,4 @@ class StockUpdateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
 }
 
 @Parcelize
-data class StockUpdate(val stockSymbol: String?, val prise: BigDecimal, val date: Date) : Parcelable
+data class StockUpdate(val stockSymbol: String, val prise: BigDecimal, val date: Date) : Parcelable
