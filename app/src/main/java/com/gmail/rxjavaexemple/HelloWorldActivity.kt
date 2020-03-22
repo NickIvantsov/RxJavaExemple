@@ -1,7 +1,6 @@
 package com.gmail.rxjavaexemple
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,15 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.gmail.rxjavaexemple.net.ExchangeRate
+import com.gmail.rxjavaexemple.net.RetrofitYahooServiceFactory
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.parcel.Parcelize
 import java.math.BigDecimal
 import java.text.DecimalFormat
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 class HelloWorldActivity : AppCompatActivity() {
     @BindView(R.id.hello_world_salute)
@@ -29,30 +27,33 @@ class HelloWorldActivity : AppCompatActivity() {
     @BindView(R.id.stock_updates_recycler_view)
     lateinit var recyclerView: RecyclerView
     lateinit var rvLayoutManager: LinearLayoutManager
-    lateinit var stockDataAdapter: StockDataAdapter
+    lateinit var rateDataAdapter: RateDataAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hello_world)
         ButterKnife.bind(this)
 
         rvLayoutManager = LinearLayoutManager(this)
-        stockDataAdapter = StockDataAdapter()
+        rateDataAdapter = RateDataAdapter()
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = rvLayoutManager
-            adapter = stockDataAdapter
+            adapter = rateDataAdapter
         }
 
-        Observable.just(
-                StockUpdate("APPL", BigDecimal(12.43), Date()),
-                StockUpdate("GOOGLE", BigDecimal(12.43), Date()),
-                StockUpdate("TWTR", BigDecimal(12.43), Date())
-            )
-            .subscribe {
-                Log.d("APP", "New update $it")
-                stockDataAdapter.add(it)
-            }
-
+        val yahooService = RetrofitYahooServiceFactory().create()
+        yahooService.yqlQuery("01.12.2019")
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                log(it.toString())
+                rateDataAdapter.bank = it.bank
+                rateDataAdapter.baseCurrencyLit = it.baseCurrencyLit
+                rateDataAdapter.date = it.date
+                rateDataAdapter.addAll(it.exchangeRate)
+            }, {
+                log("error = ${it.message}")
+            })
         Observable.just("Hello! Please use this app responsibly!")
             .subscribe { helloWorldSalute.text = it }
 
@@ -75,8 +76,24 @@ class HelloWorldActivity : AppCompatActivity() {
 
 }
 
+fun log(stage: String, item: String) {
+    Log.d(
+        "APP", stage + ":" + Thread.currentThread().name + ":" +
+                item
+    )
+}
 
-class StockDataAdapter(private val data: MutableList<StockUpdate> = ArrayList()) :
+fun log(stage: String) {
+    Log.d("APP", stage + ":" + Thread.currentThread().name)
+}
+
+
+class RateDataAdapter(
+    private val data: MutableList<ExchangeRate> = ArrayList(),
+    var bank: String = "",
+    var baseCurrencyLit: String = "",
+    var date: String = ""
+) :
     RecyclerView.Adapter<StockUpdateViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockUpdateViewHolder {
@@ -88,48 +105,86 @@ class StockDataAdapter(private val data: MutableList<StockUpdate> = ArrayList())
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: StockUpdateViewHolder, position: Int) {
-        val stockUpdate = data[position]
-        holder.setData(stockUpdate.stockSymbol, stockUpdate.prise, stockUpdate.date)
+        val exchangeRate = data[position]
+        holder.setBank(bank)
+        holder.setDate(date)
+        holder.setBaseCurrency(exchangeRate.baseCurrency)
+        holder.setCurrency(exchangeRate.currency)
+        holder.setPurchaseRate(exchangeRate.purchaseRate)
+        holder.setSaleRate(exchangeRate.saleRate)
+        holder.setPurchaseRateNB(exchangeRate.purchaseRateNB)
+        holder.setSaleRateNB(exchangeRate.saleRateNB)
     }
 
-    fun add(stockSymbol: StockUpdate) {
-        data.add(stockSymbol)
+    fun add(exchangeRate: ExchangeRate) {
+        data.add(exchangeRate)
+        notifyItemInserted(data.size - 1)
+    }
+
+    fun addAll(exchangeRate: List<ExchangeRate>) {
+        data.addAll(exchangeRate)
         notifyItemInserted(data.size - 1)
     }
 }
 
 class StockUpdateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    @BindView(R.id.stock_item_symbol)
-    lateinit var stockSymbol: TextView
+    @BindView(R.id.baseCurrency)
+    lateinit var baseCurrency: TextView
 
-    @BindView(R.id.stock_item_price)
-    lateinit var price: TextView
+    @BindView(R.id.bank)
+    lateinit var bank: TextView
 
-    @BindView(R.id.stock_item_date)
+    @BindView(R.id.date)
     lateinit var date: TextView
 
-    fun setStockSymbol(stockSymbol: String) {
-        this.stockSymbol.text = stockSymbol
+    @BindView(R.id.saleRateNB)
+    lateinit var saleRateNB: TextView
+
+    @BindView(R.id.purchaseRateNB)
+    lateinit var purchaseRateNB: TextView
+
+    @BindView(R.id.saleRate)
+    lateinit var saleRate: TextView
+
+    @BindView(R.id.purchaseRate)
+    lateinit var purchaseRate: TextView
+
+    @BindView(R.id.currency)
+    lateinit var currency: TextView
+
+    fun setBaseCurrency(baseCurrency: String) {
+        this.baseCurrency.text = baseCurrency
     }
 
-    fun setPrise(prise: BigDecimal) {
-        this.price.text = DecimalFormat("#0.00").format(prise)
+    fun setBank(bank: String) {
+        this.bank.text = bank
     }
 
-    fun setDate(date: Date) {
-        this.date.text = (SimpleDateFormat.getDateTimeInstance().format(date))
+    fun setSaleRateNB(saleRateNB: Double) {
+        this.saleRateNB.text = "${DecimalFormat("#0.00000").format(BigDecimal(saleRateNB))}"
     }
 
-    fun setData(stockSymbol: String, prise: BigDecimal, date: Date) {
-        this.stockSymbol.text = stockSymbol
-        this.price.text = DecimalFormat("#0.00").format(prise)
-        this.date.text = (SimpleDateFormat.getDateTimeInstance().format(date))
+    fun setPurchaseRateNB(purchaseRateNB: Double) {
+        this.purchaseRateNB.text = "${DecimalFormat("#0.00000").format(BigDecimal(purchaseRateNB))}"
+    }
+
+    fun setSaleRate(saleRate: Double) {
+        this.saleRate.text = "${DecimalFormat("#0.00000").format(BigDecimal(saleRate))}"
+    }
+
+    fun setPurchaseRate(purchaseRate: Double) {
+        this.purchaseRate.text = "${DecimalFormat("#0.00000").format(BigDecimal(purchaseRate))}"
+    }
+
+    fun setDate(date: String) {
+        this.date.text = date
+    }
+
+    fun setCurrency(currency: String) {
+        this.currency.text = currency
     }
 
     init {
         ButterKnife.bind(this, itemView)
     }
 }
-
-@Parcelize
-data class StockUpdate(val stockSymbol: String, val prise: BigDecimal, val date: Date) : Parcelable

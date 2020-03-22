@@ -12,33 +12,138 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/stock_item_symbol"
+            android:id="@+id/baseCurrency"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="GOOGLE"
+            android:text="UAH"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/stock_item_price"
+            android:id="@+id/date"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="18.90"
-            android:textColor="@android:color/holo_green_dark"
-            android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="2012-12-01"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/currency"
+            app:layout_constraintEnd_toStartOf="@+id/bank"
+            app:layout_constraintStart_toEndOf="@+id/currency"
+            app:layout_constraintTop_toTopOf="@+id/currency" />
+
+        <TextView
+            android:id="@+id/currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="USD"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/baseCurrency"
+            app:layout_constraintStart_toEndOf="@+id/baseCurrency"
+            app:layout_constraintTop_toTopOf="@+id/baseCurrency"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/saleRateNB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="15.6389750"
+            app:layout_constraintBottom_toBottomOf="@+id/textView8"
+            app:layout_constraintStart_toEndOf="@+id/textView8"
+            app:layout_constraintTop_toTopOf="@+id/textView8" />
+
+        <TextView
+            android:id="@+id/purchaseRateNB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15.6389750"
+            app:layout_constraintBottom_toBottomOf="@+id/textView9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView9" />
+
+        <TextView
+            android:id="@+id/saleRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="17.0000000"
+            app:layout_constraintBottom_toBottomOf="@+id/textView14"
+            app:layout_constraintStart_toEndOf="@+id/textView14"
+            app:layout_constraintTop_toTopOf="@+id/textView14" />
+
+        <TextView
+            android:id="@+id/purchaseRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15.5000000"
+            app:layout_constraintBottom_toBottomOf="@+id/textView15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView15" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="sale"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="sale"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="purchase"
+            app:layout_constraintBottom_toBottomOf="@+id/saleRateNB"
+            app:layout_constraintEnd_toStartOf="@+id/purchaseRateNB"
+            app:layout_constraintTop_toTopOf="@+id/saleRateNB" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="purchase"
+            app:layout_constraintBottom_toBottomOf="@+id/saleRate"
+            app:layout_constraintEnd_toStartOf="@+id/purchaseRate"
+            app:layout_constraintTop_toTopOf="@+id/saleRate" />
+
+        <TextView
+            android:id="@+id/bank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PB"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/stock_item_date"
+            android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="2012-12-01"
-            android:textSize="12sp"
+            android:layout_marginTop="16dp"
+            android:text="Курс продажи/покупки НБУ"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stock_item_symbol" />
+            app:layout_constraintTop_toBottomOf="@+id/date" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Курс продажи/покупик ПриватБанка"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
