@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RxJavaExemple</string>
+    <string name="not_init">Not init</string>
 </resources>

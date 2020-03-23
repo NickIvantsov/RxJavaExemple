@@ -6,18 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.gmail.rxjavaexemple.net.ExchangeRate
-import com.gmail.rxjavaexemple.net.RetrofitYahooServiceFactory
+import com.gmail.rxjavaexemple.net.RetrofitPbServiceFactory
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.math.BigDecimal
 import java.text.DecimalFormat
+import java.util.concurrent.TimeUnit
 
 
 class HelloWorldActivity : AppCompatActivity() {
@@ -28,6 +31,7 @@ class HelloWorldActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
     lateinit var rvLayoutManager: LinearLayoutManager
     lateinit var rateDataAdapter: RateDataAdapter
+    private val compositeDisposable = CompositeDisposable()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hello_world)
@@ -41,23 +45,58 @@ class HelloWorldActivity : AppCompatActivity() {
             adapter = rateDataAdapter
         }
 
-        val yahooService = RetrofitYahooServiceFactory().create()
-        yahooService.yqlQuery("01.12.2019")
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                log(it.toString())
-                rateDataAdapter.bank = it.bank
-                rateDataAdapter.baseCurrencyLit = it.baseCurrencyLit
-                rateDataAdapter.date = it.date
-                rateDataAdapter.addAll(it.exchangeRate)
+        val pbService = RetrofitPbServiceFactory().create()
+        var count = 1
+        Observable.interval(0, 5, TimeUnit.SECONDS)
+            .flatMap {
+                when (count) {
+                    32 -> count = 1
+                    else -> count++
+                }
+                pbService.getRatePb("0$count.12.2019")
+                    .toObservable()
+            }.map {
+                rateDataAdapter.bank = it.bank ?: ""
+                rateDataAdapter.baseCurrencyLit = it.baseCurrencyLit ?: ""
+                rateDataAdapter.date = it.date ?: ""
+                it.exchangeRate
+            }.flatMap {
+                Observable.fromIterable(it)
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ exchangeRate ->
+                rateDataAdapter.add(exchangeRate)
             }, {
-                log("error = ${it.message}")
+                it.printStackTrace()
+                Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
             })
-        Observable.just("Hello! Please use this app responsibly!")
+        /*val pbDisposable = pbService.getRatePb("01.12.2019")
+            .subscribeOn(Schedulers.io())
+            .toObservable()
+            .map {
+                rateDataAdapter.bank = it.bank ?: ""
+                rateDataAdapter.baseCurrencyLit = it.baseCurrencyLit ?: ""
+                rateDataAdapter.date = it.date ?: ""
+                it.exchangeRate
+            }.flatMap {
+                Observable.fromIterable(it)
+            }.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ exchangeRate ->
+                rateDataAdapter.add(exchangeRate)
+            }, {
+                when (it) {
+                    it as UnknownHostException -> {
+                        Toast.makeText(applicationContext, "Internet error", Toast.LENGTH_LONG)
+                            .show()
+                    }
+                }
+                it.printStackTrace()
+                Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
+            })
+        compositeDisposable.add(pbDisposable)*/
+        val disposable2 = Observable.just("Hello! Please use this app responsibly!")
             .subscribe { helloWorldSalute.text = it }
-
-        Observable.just(1, 2, 3, 4, 5)
+        compositeDisposable.add(disposable2)
+        val disposable3 = Observable.just(1, 2, 3, 4, 5)
             .subscribeOn(Schedulers.io())
             .doOnNext {
                 Log.d("TAG", "${Thread.currentThread().name} item = $it")
@@ -68,12 +107,18 @@ class HelloWorldActivity : AppCompatActivity() {
             }
 
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+            .subscribe({
                 Log.d("TAG", "${Thread.currentThread().name} item  =  $it")
-            }
+            }, {
+                Log.d("TAG", "${Thread.currentThread().name} item  =  $it")
+            })
+        compositeDisposable.add(disposable3)
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
 }
 
 fun log(stage: String, item: String) {
@@ -152,11 +197,11 @@ class StockUpdateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     @BindView(R.id.currency)
     lateinit var currency: TextView
 
-    fun setBaseCurrency(baseCurrency: String) {
+    fun setBaseCurrency(baseCurrency: String?) {
         this.baseCurrency.text = baseCurrency
     }
 
-    fun setBank(bank: String) {
+    fun setBank(bank: String?) {
         this.bank.text = bank
     }
 
@@ -180,7 +225,7 @@ class StockUpdateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         this.date.text = date
     }
 
-    fun setCurrency(currency: String) {
+    fun setCurrency(currency: String?) {
         this.currency.text = currency
     }
 
