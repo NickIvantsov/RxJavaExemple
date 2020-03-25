@@ -1,9 +1,10 @@
-package com.gmail.rxjavaexemple
+package com.gmail.rxjavaexemple.ui
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.gmail.rxjavaexemple.KeyTypes.*
+import com.gmail.rxjavaexemple.R
 import com.gmail.rxjavaexemple.operatorsTransformingObservables.*
 
 

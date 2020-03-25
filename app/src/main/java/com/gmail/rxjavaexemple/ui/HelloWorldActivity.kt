@@ -1,4 +1,4 @@
-package com.gmail.rxjavaexemple
+package com.gmail.rxjavaexemple.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.gmail.rxjavaexemple.R
 import com.gmail.rxjavaexemple.net.ExchangeRate
 import com.gmail.rxjavaexemple.net.RetrofitPbServiceFactory
 import io.reactivex.Observable
@@ -46,14 +47,9 @@ class HelloWorldActivity : AppCompatActivity() {
         }
 
         val pbService = RetrofitPbServiceFactory().create()
-        var count = 1
-        Observable.interval(0, 5, TimeUnit.SECONDS)
+        val pbDisposable = Observable.interval(0, 5, TimeUnit.SECONDS)
             .flatMap {
-                when (count) {
-                    32 -> count = 1
-                    else -> count++
-                }
-                pbService.getRatePb("0$count.12.2019")
+                pbService.getRatePb("01.12.2019")
                     .toObservable()
             }.map {
                 rateDataAdapter.bank = it.bank ?: ""
@@ -69,30 +65,7 @@ class HelloWorldActivity : AppCompatActivity() {
                 it.printStackTrace()
                 Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
             })
-        /*val pbDisposable = pbService.getRatePb("01.12.2019")
-            .subscribeOn(Schedulers.io())
-            .toObservable()
-            .map {
-                rateDataAdapter.bank = it.bank ?: ""
-                rateDataAdapter.baseCurrencyLit = it.baseCurrencyLit ?: ""
-                rateDataAdapter.date = it.date ?: ""
-                it.exchangeRate
-            }.flatMap {
-                Observable.fromIterable(it)
-            }.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ exchangeRate ->
-                rateDataAdapter.add(exchangeRate)
-            }, {
-                when (it) {
-                    it as UnknownHostException -> {
-                        Toast.makeText(applicationContext, "Internet error", Toast.LENGTH_LONG)
-                            .show()
-                    }
-                }
-                it.printStackTrace()
-                Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
-            })
-        compositeDisposable.add(pbDisposable)*/
+        compositeDisposable.add(pbDisposable)
         val disposable2 = Observable.just("Hello! Please use this app responsibly!")
             .subscribe { helloWorldSalute.text = it }
         compositeDisposable.add(disposable2)
@@ -117,6 +90,7 @@ class HelloWorldActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        compositeDisposable.dispose()
         compositeDisposable.clear()
     }
 }
@@ -161,8 +135,19 @@ class RateDataAdapter(
         holder.setSaleRateNB(exchangeRate.saleRateNB)
     }
 
-    fun add(exchangeRate: ExchangeRate) {
-        data.add(exchangeRate)
+    fun add(newExchangeRate: ExchangeRate) {
+        loop@ for (exchangeRate in data) {
+            when (exchangeRate.currency) {
+                newExchangeRate.currency -> {
+                    if (exchangeRate.purchaseRateNB == newExchangeRate.purchaseRateNB && exchangeRate.purchaseRate == newExchangeRate.purchaseRate) {
+                        return
+                    }
+                    break@loop
+                }
+            }
+        }
+
+        data.add(newExchangeRate)
         notifyItemInserted(data.size - 1)
     }
 

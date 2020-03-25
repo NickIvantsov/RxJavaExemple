@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gmail.rxjavaexemple">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".AppApplication"
         android:allowBackup="true"
@@ -10,15 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HelloWorldActivity"></activity>
-        <activity android:name=".StartActivity">
+        <activity android:name=".ui.SandboxActivity"></activity>
+        <activity android:name=".ui.HelloWorldActivity" />
+        <activity android:name=".ui.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RxJavaOperationsActivity"></activity>
+        <activity android:name=".ui.RxJavaOperationsActivity" />
     </application>
 
 </manifest>

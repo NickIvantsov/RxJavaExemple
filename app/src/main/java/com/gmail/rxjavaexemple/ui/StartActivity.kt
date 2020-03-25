@@ -1,10 +1,12 @@
-package com.gmail.rxjavaexemple
+package com.gmail.rxjavaexemple.ui
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.gmail.rxjavaexemple.R
+import com.gmail.rxjavaexemple.navigateTo
 
 class StartActivity : AppCompatActivity() {
 
@@ -22,6 +24,11 @@ class StartActivity : AppCompatActivity() {
     @OnClick(R.id.helloRxJavaBtn)
     fun helloRxJavaPressed(v: View) {
         navigateTo(HelloWorldActivity::class.java)
+    }
+
+    @OnClick(R.id.sandbox)
+    fun sandboxPressed(v: View) {
+        navigateTo(SandboxActivity::class.java)
     }
 
 }

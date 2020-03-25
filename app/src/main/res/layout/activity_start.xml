@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StartActivity">
+    tools:context=".ui.StartActivity">
 
     <Button
         android:id="@+id/rxOperationBtn"
@@ -24,5 +24,15 @@
         app:layout_constraintBottom_toTopOf="@+id/rxOperationBtn"
         app:layout_constraintEnd_toEndOf="@+id/rxOperationBtn"
         app:layout_constraintStart_toStartOf="@+id/rxOperationBtn" />
+
+    <Button
+        android:id="@+id/sandbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Sandbox"
+        app:layout_constraintBottom_toTopOf="@+id/helloRxJavaBtn"
+        app:layout_constraintEnd_toEndOf="@+id/helloRxJavaBtn"
+        app:layout_constraintStart_toStartOf="@+id/helloRxJavaBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
